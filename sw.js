@@ -3,7 +3,7 @@
    while a fresh copy is fetched in the background (stale-while-revalidate).
    An update therefore shows up on the second launch after it was published.
    Bump CACHE whenever the list of files changes. */
-const CACHE = 'aag-kids-learn-v1';
+const CACHE = 'aag-kids-learn-v2';
 const ASSETS = [
   './', 'index.html', 'styles.css', 'data.js', 'app.js', 'manifest.webmanifest',
   'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png',

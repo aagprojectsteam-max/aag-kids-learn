@@ -45,15 +45,15 @@ function numberItem(n, word, say) {
 }
 
 const COLORS = [
-  colorItem('red', 'אדום', 'אָדוֹם', '#E53935', '🍎'),
-  colorItem('blue', 'כחול', 'כָּחוֹל', '#1E6FE0', '💧'),
-  colorItem('yellow', 'צהוב', 'צָהוֹב', '#FFD60A', '🍌'),
-  colorItem('green', 'ירוק', 'יָרוֹק', '#2EAD4B', '🍏'),
+  colorItem('red', 'אדום', 'אָדוֹם', '#FF2B2B', '🍎'),
+  colorItem('blue', 'כחול', 'כָּחוֹל', '#0A7BFF', '💧'),
+  colorItem('yellow', 'צהוב', 'צָהוֹב', '#FFD400', '🍌'),
+  colorItem('green', 'ירוק', 'יָרוֹק', '#1FC14A', '🍏'),
   colorItem('orange', 'כתום', 'כָּתוֹם', '#FF8A00', '🥕'),
-  colorItem('purple', 'סגול', 'סָגוֹל', '#8E44AD', '🍇'),
-  colorItem('pink', 'ורוד', 'וָרוֹד', '#FF6FAE', '🌸'),
-  colorItem('brown', 'חום', 'חוּם', '#8D5524', '🐻'),
-  colorItem('black', 'שחור', 'שָׁחוֹר', '#1D1D1F', '🖤'),
+  colorItem('purple', 'סגול', 'סָגוֹל', '#A63DE8', '🍇'),
+  colorItem('pink', 'ורוד', 'וָרוֹד', '#FF69B4', '🌸'),
+  colorItem('brown', 'חום', 'חוּם', '#8B4E1E', '🐻'),
+  colorItem('black', 'שחור', 'שָׁחוֹר', '#151515', '🖤'),
   colorItem('white', 'לבן', 'לָבָן', '#FFFFFF', '☁️'),
 ];
 
@@ -169,15 +169,15 @@ const LETTERS = [
 /* kind: color | shape | emoji | letter | number | people
    visible: shown on the home screen by default (parents can change it). */
 const CATS = [
-  { id: 'colors', title: 'צבעים', say: 'צְבָעִים', icon: '🎨', tint: '#F5731F', kind: 'color', items: COLORS, visible: true },
-  { id: 'shapes', title: 'צורות', say: 'צוּרוֹת', icon: '🔷', tint: '#0E9F9A', kind: 'shape', items: SHAPES, visible: true },
-  { id: 'animals', title: 'חיות', say: 'חַיּוֹת', icon: '🐶', tint: '#2E9E4F', kind: 'emoji', items: ANIMALS, visible: true },
-  { id: 'family', title: 'משפחה', say: 'מִשְׁפָּחָה', icon: '🏠', tint: '#8C4DCC', kind: 'people', items: [], visible: true },
-  { id: 'friends', title: 'חברים', say: 'חֲבֵרִים', icon: '👫', tint: '#E0457B', kind: 'people', items: [], visible: true },
-  { id: 'letters', title: 'אותיות', say: 'אוֹתִיּוֹת', icon: 'א', tint: '#2B6BE6', kind: 'letter', items: LETTERS, visible: true },
-  { id: 'food', title: 'אוכל', say: 'אֹכֶל', icon: '🍎', tint: '#C2185B', kind: 'emoji', items: FOOD, visible: false },
-  { id: 'vehicles', title: 'תחבורה', say: 'תַּחְבּוּרָה', icon: '🚗', tint: '#455A64', kind: 'emoji', items: VEHICLES, visible: false },
-  { id: 'body', title: 'הגוף', say: 'הַגּוּף', icon: '👂', tint: '#A0522D', kind: 'emoji', items: BODY, visible: false },
+  { id: 'colors', title: 'צבעים', say: 'צְבָעִים', icon: '🎨', tint: '#FF6A00', kind: 'color', items: COLORS, visible: true },
+  { id: 'shapes', title: 'צורות', say: 'צוּרוֹת', icon: '🔷', tint: '#00B3A6', kind: 'shape', items: SHAPES, visible: true },
+  { id: 'animals', title: 'חיות', say: 'חַיּוֹת', icon: '🐶', tint: '#1FB24A', kind: 'emoji', items: ANIMALS, visible: true },
+  { id: 'family', title: 'משפחה', say: 'מִשְׁפָּחָה', icon: '🏠', tint: '#8E3FE8', kind: 'people', items: [], visible: true },
+  { id: 'friends', title: 'חברים', say: 'חֲבֵרִים', icon: '👫', tint: '#FF3D7F', kind: 'people', items: [], visible: true },
+  { id: 'letters', title: 'אותיות', say: 'אוֹתִיּוֹת', icon: 'א', tint: '#1F6BFF', kind: 'letter', items: LETTERS, visible: true },
+  { id: 'food', title: 'אוכל', say: 'אֹכֶל', icon: '🍎', tint: '#F03E3E', kind: 'emoji', items: FOOD, visible: false },
+  { id: 'vehicles', title: 'תחבורה', say: 'תַּחְבּוּרָה', icon: '🚗', tint: '#00A3E0', kind: 'emoji', items: VEHICLES, visible: false },
+  { id: 'body', title: 'הגוף', say: 'הַגּוּף', icon: '👂', tint: '#E8590C', kind: 'emoji', items: BODY, visible: false },
   { id: 'numbers', title: 'מספרים', say: 'מִסְפָּרִים', icon: '123', tint: '#6741D9', kind: 'number', items: NUMBERS, visible: false },
 ];
 
@@ -190,24 +190,24 @@ const CATS = [
      name  – "דני" (+ small "חבר"), spoken "דני",     question "איפה דני?"
    the / theS are used when the person has NO name ("איפה האח?"). */
 const ROLES = {
-  me: { group: 'family', style: 'me', t: 'אני', s: 'אֲנִי', the: 'אני', theS: 'אֲנִי', color: '#1AA6B3' },
-  father: { group: 'family', style: 'title', t: 'אבא', s: 'אַבָּא', the: 'אבא', theS: 'אַבָּא', color: '#3366D9' },
-  mother: { group: 'family', style: 'title', t: 'אימא', s: 'אִמָּא', the: 'אימא', theS: 'אִמָּא', color: '#D9598C' },
-  brother: { group: 'family', style: 'rel', t: 'אח', s: 'אָח', the: 'האח', theS: 'הָאָח', color: '#F28C1A' },
-  sister: { group: 'family', style: 'rel', t: 'אחות', s: 'אָחוֹת', the: 'האחות', theS: 'הָאָחוֹת', color: '#9959D9' },
-  grandfather: { group: 'family', style: 'title', t: 'סבא', s: 'סַבָּא', the: 'סבא', theS: 'סַבָּא', color: '#598C4D' },
-  grandmother: { group: 'family', style: 'title', t: 'סבתא', s: 'סַבְתָּא', the: 'סבתא', theS: 'סַבְתָּא', color: '#BF7340' },
-  baby: { group: 'family', style: 'rel', t: 'תינוק', s: 'תִּינוֹק', the: 'התינוק', theS: 'הַתִּינוֹק', color: '#E6A817' },
-  babyGirl: { group: 'family', style: 'rel', t: 'תינוקת', s: 'תִּינוֹקֶת', the: 'התינוקת', theS: 'הַתִּינוֹקֶת', color: '#E68AB8' },
-  uncle: { group: 'family', style: 'title', t: 'דוד', s: 'דּוֹד', the: 'הדוד', theS: 'הַדּוֹד', color: '#2F7F8F' },
-  aunt: { group: 'family', style: 'title', t: 'דודה', s: 'דּוֹדָה', the: 'הדודה', theS: 'הַדּוֹדָה', color: '#B0508F' },
-  cousinM: { group: 'family', style: 'rel', t: 'בן דוד', s: 'בֶּן דּוֹד', the: 'בן הדוד', theS: 'בֶּן הַדּוֹד', color: '#5C7FD9' },
-  cousinF: { group: 'family', style: 'rel', t: 'בת דודה', s: 'בַּת דּוֹדָה', the: 'בת הדודה', theS: 'בַּת הַדּוֹדָה', color: '#C76BB0' },
-  friend: { group: 'friends', style: 'name', t: 'חבר', s: 'חָבֵר', the: 'החבר', theS: 'הֶחָבֵר', color: '#F28C1A' },
-  friendGirl: { group: 'friends', style: 'name', t: 'חברה', s: 'חֲבֵרָה', the: 'החברה', theS: 'הַחֲבֵרָה', color: '#D9598C' },
-  teacher: { group: 'friends', style: 'the', t: 'גננת', s: 'גַּנֶּנֶת', the: 'הגננת', theS: 'הַגַּנֶּנֶת', color: '#2E9E4F' },
-  assistant: { group: 'friends', style: 'the', t: 'סייעת', s: 'סַיֶּעֶת', the: 'הסייעת', theS: 'הַסַּיֶּעֶת', color: '#3366D9' },
-  therapist: { group: 'friends', style: 'the', t: 'מטפלת', s: 'מְטַפֶּלֶת', the: 'המטפלת', theS: 'הַמְּטַפֶּלֶת', color: '#8C4DCC' },
+  me: { group: 'family', style: 'me', t: 'אני', s: 'אֲנִי', the: 'אני', theS: 'אֲנִי', color: '#00B3C4' },
+  father: { group: 'family', style: 'title', t: 'אבא', s: 'אַבָּא', the: 'אבא', theS: 'אַבָּא', color: '#0A7BFF' },
+  mother: { group: 'family', style: 'title', t: 'אימא', s: 'אִמָּא', the: 'אימא', theS: 'אִמָּא', color: '#FF3D7F' },
+  brother: { group: 'family', style: 'rel', t: 'אח', s: 'אָח', the: 'האח', theS: 'הָאָח', color: '#FF8A00' },
+  sister: { group: 'family', style: 'rel', t: 'אחות', s: 'אָחוֹת', the: 'האחות', theS: 'הָאָחוֹת', color: '#A63DE8' },
+  grandfather: { group: 'family', style: 'title', t: 'סבא', s: 'סַבָּא', the: 'סבא', theS: 'סַבָּא', color: '#1FB24A' },
+  grandmother: { group: 'family', style: 'title', t: 'סבתא', s: 'סַבְתָּא', the: 'סבתא', theS: 'סַבְתָּא', color: '#E8590C' },
+  baby: { group: 'family', style: 'rel', t: 'תינוק', s: 'תִּינוֹק', the: 'התינוק', theS: 'הַתִּינוֹק', color: '#FFB300' },
+  babyGirl: { group: 'family', style: 'rel', t: 'תינוקת', s: 'תִּינוֹקֶת', the: 'התינוקת', theS: 'הַתִּינוֹקֶת', color: '#FF69B4' },
+  uncle: { group: 'family', style: 'title', t: 'דוד', s: 'דּוֹד', the: 'הדוד', theS: 'הַדּוֹד', color: '#00A3E0' },
+  aunt: { group: 'family', style: 'title', t: 'דודה', s: 'דּוֹדָה', the: 'הדודה', theS: 'הַדּוֹדָה', color: '#D6336C' },
+  cousinM: { group: 'family', style: 'rel', t: 'בן דוד', s: 'בֶּן דּוֹד', the: 'בן הדוד', theS: 'בֶּן הַדּוֹד', color: '#4C6EF5' },
+  cousinF: { group: 'family', style: 'rel', t: 'בת דודה', s: 'בַּת דּוֹדָה', the: 'בת הדודה', theS: 'בַּת הַדּוֹדָה', color: '#CC5DE8' },
+  friend: { group: 'friends', style: 'name', t: 'חבר', s: 'חָבֵר', the: 'החבר', theS: 'הֶחָבֵר', color: '#FF8A00' },
+  friendGirl: { group: 'friends', style: 'name', t: 'חברה', s: 'חֲבֵרָה', the: 'החברה', theS: 'הַחֲבֵרָה', color: '#FF3D7F' },
+  teacher: { group: 'friends', style: 'the', t: 'גננת', s: 'גַּנֶּנֶת', the: 'הגננת', theS: 'הַגַּנֶּנֶת', color: '#1FB24A' },
+  assistant: { group: 'friends', style: 'the', t: 'סייעת', s: 'סַיֶּעֶת', the: 'הסייעת', theS: 'הַסַּיֶּעֶת', color: '#0A7BFF' },
+  therapist: { group: 'friends', style: 'the', t: 'מטפלת', s: 'מְטַפֶּלֶת', the: 'המטפלת', theS: 'הַמְּטַפֶּלֶת', color: '#8E3FE8' },
 };
 
 // Same ids as the original iPad app, so the list looks familiar.
@@ -234,3 +234,11 @@ const SHAPE_SVG = {
   moon: '<path d="M64 7 A44 44 0 1 0 64 93 A36 36 0 1 1 64 7Z"/>',
   hexagon: '<polygon points="50,5 89,27.5 89,72.5 50,95 11,72.5 11,27.5"/>',
 };
+
+// Learn mode: every shape has its own colour. Game mode: all options share one
+// colour per round, so the shape itself is the only clue.
+const SHAPE_COLORS = {
+  circle: '#FF2B2B', square: '#0A7BFF', triangle: '#1FC14A', star: '#FFC400', heart: '#FF3D7F',
+  rectangle: '#FF8A00', oval: '#A63DE8', diamond: '#00B8D9', moon: '#5B5BF0', hexagon: '#00B894',
+};
+const GAME_TONES = ['#FF2B2B', '#0A7BFF', '#1FC14A', '#FF8A00', '#A63DE8', '#FF3D7F', '#00B3A6'];

@@ -4,7 +4,7 @@
    voice recordings, progress) stays on this device: settings in localStorage,
    photos and recordings in IndexedDB. */
 
-const APP_VERSION = '1.0.0';
+const APP_VERSION = '1.1.0';
 const $app = document.getElementById('app');
 
 /* ---------- DOM helper ---------- */
@@ -344,7 +344,36 @@ function activeItems(cat) {
 
 const showWord = it => (S.niqqud ? (it.wordSay || it.say) : it.word);
 
-function picture(it, cat, mode) {
+// darker (k < 1) variant of a #rrggbb colour
+function shade(hex, k) {
+  const n = parseInt(hex.slice(1), 16);
+  const c = v => Math.round(Math.min(255, Math.max(0, v * k))).toString(16).padStart(2, '0');
+  return '#' + c(n >> 16) + c((n >> 8) & 255) + c(n & 255);
+}
+
+let gradSeq = 0;
+function shapeSvg(shape, color) {
+  const id = 'sg' + (++gradSeq);
+  const d = SHAPE_SVG[shape];
+  return `<svg viewBox="-5 -5 110 110" aria-hidden="true"><defs>`
+    + `<linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".42"/>`
+    + `<stop offset=".6" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>`
+    + `<g stroke-linejoin="round"><g fill="${shade(color, 0.7)}" stroke="${shade(color, 0.7)}" stroke-width="7">${d}</g>`
+    + `<g fill="${color}">${d}</g><g fill="url(#${id})">${d}</g></g></svg>`;
+}
+
+// the picture of a home tile / menu button
+function iconNode(c) {
+  if (c.kind === 'shape') {
+    return h('span', { class: 'ico', html: '<svg viewBox="0 0 100 100" aria-hidden="true">'
+      + '<circle cx="30" cy="30" r="24" fill="#FF2B2B"/><rect x="56" y="10" width="40" height="40" rx="5" fill="#0A7BFF"/>'
+      + '<polygon points="50,56 78,96 22,96" fill="#FFC400" stroke="#FFC400" stroke-width="4" stroke-linejoin="round"/></svg>' });
+  }
+  const text = c.kind === 'letter' || c.kind === 'number';
+  return h('span', { class: 'ico' + (text ? ' txt' : '') + (c.icon.length > 2 ? ' long' : '') }, c.icon);
+}
+
+function picture(it, cat, mode, tone) {
   if (it.person) {
     const url = media.photo[it.id];
     return url
@@ -354,10 +383,10 @@ function picture(it, cat, mode) {
   switch (cat.kind) {
     case 'color':
       return h('div', { class: 'pic' },
-        h('div', { class: 'swatch', style: `background:${it.color}` }),
+        h('div', { class: 'swatch' + (it.color === '#FFFFFF' ? ' light' : ''), style: `background:${it.color}` }),
         mode === 'learn' && h('span', { class: 'badge' }, it.emoji));
     case 'shape':
-      return h('div', { class: 'pic shape', html: `<svg viewBox="0 0 100 100" fill="${cat.tint}" aria-hidden="true">${SHAPE_SVG[it.shape]}</svg>` });
+      return h('div', { class: 'pic shape', html: shapeSvg(it.shape, tone || SHAPE_COLORS[it.shape] || cat.tint) });
     case 'letter':
     case 'number':
       return h('div', { class: 'pic glyph', style: `color:${cat.tint}` }, h('span', null, it.glyph));
@@ -461,6 +490,14 @@ const LOCK_TIP = 'המסך ננעל: גלגל ההגדרות מוסתר.\nלפת
   + 'טיפ: כדי שהילד לא יצא מהאפליקציה אפשר להפעיל באייפד "גישה מודרכת" '
   + '(הגדרות ← נגישות ← גישה מודרכת), ואז שלוש לחיצות על הכפתור העליון.';
 
+// every letter of the title in its own lively colour (marks stay with their letter)
+const TITLE_COLORS = ['#FF2B2B', '#FF8A00', '#1FB24A', '#0A7BFF', '#A63DE8', '#FF3D7F', '#00B3A6'];
+function rainbow(text) {
+  let k = 0;
+  return text.split(' ').flatMap((word, w) => [w ? ' ' : null, h('span', { class: 'tw' },
+    (word.match(/\P{M}\p{M}*/gu) || []).map(ch => h('span', { style: `color:${TITLE_COLORS[k++ % TITLE_COLORS.length]}` }, ch)))]);
+}
+
 function Home() {
   // a people topic with nobody in it yet stays off the child's screen
   const cats = CATS.filter(c => S.cats[c.id].show && (c.kind !== 'people' || allItems(c).length));
@@ -488,12 +525,12 @@ function Home() {
   const colsL = n <= 3 ? Math.max(n, 1) : n <= 6 ? 3 : n <= 8 ? 4 : 5;
   const colsP = n <= 1 ? 1 : n <= 8 ? 2 : 3;
   return h('main', { class: 'screen home' },
-    h('header', { class: 'home-top' }, lockBtn, h('h1', null, S.niqqud ? 'בּוֹאוּ נִלְמַד!' : 'בואו נלמד!'), gear),
+    h('header', { class: 'home-top' }, lockBtn, h('h1', null, rainbow(S.niqqud ? 'בּוֹאוּ נִלְמַד!' : 'בואו נלמד!')), gear),
     n === 0
       ? h('div', { class: 'empty' }, 'כל הנושאים מוסתרים.\nהורים: אפשר להציג נושאים בהגדרות.')
       : h('div', { class: 'grid', style: `--cols-l:${colsL};--cols-p:${colsP}` }, cats.map(c =>
         h('button', { class: 'tile', style: `--tint:${c.tint}`, onclick: () => openCat(c) },
-          h('span', { class: 'tile-icon' + (c.icon.length > 2 ? ' long' : '') }, c.icon),
+          h('span', { class: 'tile-icon' }, iconNode(c)),
           h('span', { class: 'tile-title' }, S.niqqud ? c.say : c.title)))));
 }
 
@@ -516,9 +553,9 @@ function Menu(r) {
   return h('main', { class: 'screen menu', style: `--tint:${cat.tint}` }, Header(title, cat.tint),
     h('div', { class: 'menu-body' },
       h('button', { class: 'big', onclick: () => openLearn(cat) },
-        h('span', { class: 'big-icon' }, '👀'), h('span', null, S.niqqud ? 'לִלְמֹד' : 'ללמוד')),
+        h('span', { class: 'big-icon' }, h('span', { class: 'ico' }, '👀')), h('span', null, S.niqqud ? 'לִלְמֹד' : 'ללמוד')),
       h('button', { class: 'big play', disabled: items.length < 2, onclick: () => openGame(cat) },
-        h('span', { class: 'big-icon' }, '🎯'), h('span', null, S.niqqud ? 'לְשַׂחֵק' : 'לשחק'))));
+        h('span', { class: 'big-icon' }, h('span', { class: 'ico' }, '🎯')), h('span', null, S.niqqud ? 'לְשַׂחֵק' : 'לשחק'))));
 }
 
 /* ---------- learn ---------- */
@@ -595,6 +632,9 @@ function newRound(g) {
   g.hint = false;
   g.firstTry = true;
   g.lastId = target.id;
+  let tone;
+  do { tone = GAME_TONES[Math.floor(Math.random() * GAME_TONES.length)]; } while (tone === g.tone);
+  g.tone = tone;
 }
 
 function openGame(cat) {
@@ -648,7 +688,7 @@ function Game(g) {
         disabled: g.wrong.has(o.id),
         'aria-label': o.word,
         onclick: () => choose(g, o),
-      }, picture(o, cat, 'opt')))));
+      }, picture(o, cat, 'opt', g.tone)))));
 }
 
 /* ---------- photos and recordings ---------- */
