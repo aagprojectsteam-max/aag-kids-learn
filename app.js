@@ -4,7 +4,7 @@
    voice recordings, progress) stays on this device: settings in localStorage,
    photos and recordings in IndexedDB. */
 
-const APP_VERSION = '1.1.0';
+const APP_VERSION = '1.2.0';
 const $app = document.getElementById('app');
 
 /* ---------- DOM helper ---------- */
@@ -362,6 +362,14 @@ function shapeSvg(shape, color) {
     + `<g fill="${color}">${d}</g><g fill="url(#${id})">${d}</g></g></svg>`;
 }
 
+// Bundled pictures (Fluent Emoji, img/<codepoints>.svg) look the same on every device;
+// an emoji that has no bundled file falls back to the system emoji font.
+const PIC_SET = new Set(typeof PICS === 'undefined' ? [] : PICS);
+function emo(ch) {
+  const cp = [...ch].map(c => c.codePointAt(0)).filter(n => n !== 0xFE0F).map(n => n.toString(16)).join('-');
+  return PIC_SET.has(cp) ? h('img', { class: 'emo', src: `img/${cp}.svg`, alt: '', draggable: false }) : ch;
+}
+
 // the picture of a home tile / menu button
 function iconNode(c) {
   if (c.kind === 'shape') {
@@ -370,7 +378,7 @@ function iconNode(c) {
       + '<polygon points="50,56 78,96 22,96" fill="#FFC400" stroke="#FFC400" stroke-width="4" stroke-linejoin="round"/></svg>' });
   }
   const text = c.kind === 'letter' || c.kind === 'number';
-  return h('span', { class: 'ico' + (text ? ' txt' : '') + (c.icon.length > 2 ? ' long' : '') }, c.icon);
+  return h('span', { class: 'ico' + (text ? ' txt' : '') + (c.icon.length > 2 ? ' long' : '') }, emo(c.icon));
 }
 
 function picture(it, cat, mode, tone) {
@@ -384,14 +392,14 @@ function picture(it, cat, mode, tone) {
     case 'color':
       return h('div', { class: 'pic' },
         h('div', { class: 'swatch' + (it.color === '#FFFFFF' ? ' light' : ''), style: `background:${it.color}` }),
-        mode === 'learn' && h('span', { class: 'badge' }, it.emoji));
+        mode === 'learn' && h('span', { class: 'badge' }, emo(it.emoji)));
     case 'shape':
       return h('div', { class: 'pic shape', html: shapeSvg(it.shape, tone || SHAPE_COLORS[it.shape] || cat.tint) });
     case 'letter':
     case 'number':
       return h('div', { class: 'pic glyph', style: `color:${cat.tint}` }, h('span', null, it.glyph));
     default:
-      return h('div', { class: 'pic emoji' }, h('span', null, it.emoji));
+      return h('div', { class: 'pic emoji' }, h('span', null, emo(it.emoji)));
   }
 }
 
@@ -553,9 +561,9 @@ function Menu(r) {
   return h('main', { class: 'screen menu', style: `--tint:${cat.tint}` }, Header(title, cat.tint),
     h('div', { class: 'menu-body' },
       h('button', { class: 'big', onclick: () => openLearn(cat) },
-        h('span', { class: 'big-icon' }, h('span', { class: 'ico' }, '👀')), h('span', null, S.niqqud ? 'לִלְמֹד' : 'ללמוד')),
+        h('span', { class: 'big-icon' }, h('span', { class: 'ico' }, emo('👀'))), h('span', null, S.niqqud ? 'לִלְמֹד' : 'ללמוד')),
       h('button', { class: 'big play', disabled: items.length < 2, onclick: () => openGame(cat) },
-        h('span', { class: 'big-icon' }, h('span', { class: 'ico' }, '🎯')), h('span', null, S.niqqud ? 'לְשַׂחֵק' : 'לשחק'))));
+        h('span', { class: 'big-icon' }, h('span', { class: 'ico' }, emo('🎯'))), h('span', null, S.niqqud ? 'לְשַׂחֵק' : 'לשחק'))));
 }
 
 /* ---------- learn ---------- */
@@ -605,7 +613,7 @@ function Learn(r) {
       card,
       many ? h('button', { class: 'arrow', 'aria-label': 'הבא', onclick: () => learnMove(r, 1), html: ICON.next }) : h('span')),
     it.example && h('button', { class: 'example', onclick: () => speak([{ text: it.exampleSay }]) },
-      h('span', { class: 'ex-emoji' }, it.emoji), h('span', null, S.niqqud ? it.exampleSay : it.example), speakerIcon()),
+      h('span', { class: 'ex-emoji' }, emo(it.emoji)), h('span', null, S.niqqud ? it.exampleSay : it.example), speakerIcon()),
     many && (items.length <= 16
       ? h('div', { class: 'dots' }, items.map((_, i) => h('i', { class: i === r.i ? 'on' : '' })))
       : h('div', { class: 'dots text' }, `${r.i + 1} / ${items.length}`)));
@@ -653,7 +661,7 @@ function choose(g, o) {
     if (g.firstTry) note(g.target.id, true);
     render();
     document.body.append(h('div', { class: 'celebrate' },
-      h('div', { class: 'celebrate-star' }, '🌟'),
+      h('div', { class: 'celebrate-star' }, emo('🌟')),
       h('div', { class: 'celebrate-text' }, S.niqqud ? 'כָּל הַכָּבוֹד!' : 'כל הכבוד!')));
     chime();
     speak([{ text: 'כָּל הַכָּבוֹד!' }]);
@@ -681,7 +689,7 @@ function Game(g) {
     h('button', { class: 'question', onclick: () => speak(sayQuestion(t)) },
       h('span', null, S.niqqud ? t.questionSay : t.question), speakerIcon()),
     h('div', { class: 'stars', 'aria-label': `כוכבים: ${g.stars}` },
-      g.stars <= 10 ? '⭐'.repeat(g.stars) : `⭐ ${g.stars}`),
+      g.stars <= 10 ? Array.from({ length: g.stars }, () => emo('⭐')) : [emo('⭐'), ` ${g.stars}`]),
     h('div', { class: `opts n${g.options.length}`, style: `--n:${g.options.length}` }, g.options.map(o =>
       h('button', {
         class: 'opt' + (g.wrong.has(o.id) ? ' wrong' : '') + (g.hint && o.id === t.id ? ' hint' : ''),
@@ -814,7 +822,7 @@ function CatSettings(cat) {
     : partial && cs.random ? `בכל כניסה נבחרים ${size} פריטים באקראי מתוך ${all.length}.`
       : `מוצגים ${shown.length} מתוך ${all.length}: ${shown.map(i => i.word).join(', ')}`;
   return Details('cat-' + cat.id,
-    [h('span', { class: 'chip-icon', style: `background:${cat.tint}` }, cat.icon), h('span', null, cat.title),
+    [h('span', { class: 'chip-icon', style: `background:${cat.tint}` }, emo(cat.icon)), h('span', null, cat.title),
       h('span', { class: 'sum-note' }, cs.show ? 'מוצג' : 'מוסתר')],
     Toggle('להציג במסך הראשי', cs.show, set(cs, 'show')),
     h('div', { class: 'row' }, h('span', null, 'כמה פריטים'), Seg(LEVELS, cs.level, set(cs, 'level'))),

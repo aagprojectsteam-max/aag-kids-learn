@@ -82,6 +82,11 @@ input, select { font: inherit; color: inherit; }
 
 /* ---------- pictures made of emoji ---------- */
 .ico, .badge, .ex-emoji, .stars, .celebrate-star, .pic.emoji span { font-family: var(--emoji); }
+/* bundled picture standing in for an emoji: takes the size of the text it replaces */
+img.emo {
+  width: 1em; height: 1em; display: inline-block; vertical-align: -.14em;
+  pointer-events: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;
+}
 
 /* ---------- round buttons, header ---------- */
 .circle {

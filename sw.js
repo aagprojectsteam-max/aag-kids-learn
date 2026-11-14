@@ -3,11 +3,14 @@
    while a fresh copy is fetched in the background (stale-while-revalidate).
    An update therefore shows up on the second launch after it was published.
    Bump CACHE whenever the list of files changes. */
-const CACHE = 'aag-kids-learn-v2';
+const CACHE = 'aag-kids-learn-v3';
 const ASSETS = [
   './', 'index.html', 'styles.css', 'data.js', 'app.js', 'manifest.webmanifest',
   'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png',
 ];
+// bundled pictures: the list lives in pics.js so the page and the worker share it
+importScripts('pics.js');
+ASSETS.push('pics.js', ...PICS.map(c => 'img/' + c + '.svg'));
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));

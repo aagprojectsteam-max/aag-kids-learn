@@ -43,3 +43,12 @@ Then open `http://localhost:18431` (8765 is taken by AnkiConnect on the laptop).
 
 Add an item to the matching array in `data.js` (`thing(prefix, id, word, say, theSay, emoji, sound)`),
 or a new entry in `CATS`. `say` is the pointed (niqqud) text used by the speech engine.
+
+## Pictures
+
+The pictures are bundled vector files, `img/CODE.svg`, so they look the same on every device
+(Fluent Emoji by Microsoft, MIT licence, see `img/LICENSE-fluent-emoji.txt`; source: github.com/microsoft/fluentui-emoji,
+the "Color" variant of each emoji). `CODE` is the emoji's code points in lowercase hex joined by `-`, without `fe0f`.
+`pics.js` lists the bundled codes; it is loaded by the page and by the service worker (offline cache).
+An emoji that has no bundled file is drawn with the device's own emoji font.
+To add one: put the file in `img/`, add its code to `pics.js`, bump `CACHE` in `sw.js`.

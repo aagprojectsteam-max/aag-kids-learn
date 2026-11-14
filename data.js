@@ -173,7 +173,7 @@ const CATS = [
   { id: 'shapes', title: 'צורות', say: 'צוּרוֹת', icon: '🔷', tint: '#00B3A6', kind: 'shape', items: SHAPES, visible: true },
   { id: 'animals', title: 'חיות', say: 'חַיּוֹת', icon: '🐶', tint: '#1FB24A', kind: 'emoji', items: ANIMALS, visible: true },
   { id: 'family', title: 'משפחה', say: 'מִשְׁפָּחָה', icon: '🏠', tint: '#8E3FE8', kind: 'people', items: [], visible: true },
-  { id: 'friends', title: 'חברים', say: 'חֲבֵרִים', icon: '👫', tint: '#FF3D7F', kind: 'people', items: [], visible: true },
+  { id: 'friends', title: 'חברים', say: 'חֲבֵרִים', icon: '🫂', tint: '#FF3D7F', kind: 'people', items: [], visible: true },
   { id: 'letters', title: 'אותיות', say: 'אוֹתִיּוֹת', icon: 'א', tint: '#1F6BFF', kind: 'letter', items: LETTERS, visible: true },
   { id: 'food', title: 'אוכל', say: 'אֹכֶל', icon: '🍎', tint: '#F03E3E', kind: 'emoji', items: FOOD, visible: false },
   { id: 'vehicles', title: 'תחבורה', say: 'תַּחְבּוּרָה', icon: '🚗', tint: '#00A3E0', kind: 'emoji', items: VEHICLES, visible: false },
