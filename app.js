@@ -4,7 +4,7 @@
    voice recordings, progress) stays on this device: settings in localStorage,
    photos and recordings in IndexedDB. */
 
-const APP_VERSION = '1.2.0';
+const APP_VERSION = '1.2.1';
 const $app = document.getElementById('app');
 
 /* ---------- DOM helper ---------- */
